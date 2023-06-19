@@ -11,16 +11,9 @@ import java.util.List;
 
 
 @SpringBootApplication
-@RestController
-@RequestMapping("/Persons")
-public class AssignmentApplication {
-	@Autowired
-	private PersonRepository personRepository;
 
-	@GetMapping
-	public List<Person> getUsers() {
-		return personRepository.findAll();
-	}
+public class AssignmentApplication {
+
 	public static void main(String[] args) {
 		SpringApplication.run(AssignmentApplication.class, args);
 	}
