@@ -1,8 +1,6 @@
 package com.example.Assignment.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +11,9 @@ import lombok.Setter;
 @Table(name = "user" , schema = "postgres")
 public class User {
     @Id
-    int id;
-    String u_name;
-    String department;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    private String u_name;
+    private String department;
+
 }
