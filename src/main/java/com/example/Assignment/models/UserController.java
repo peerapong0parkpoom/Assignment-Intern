@@ -1,15 +1,21 @@
 package com.example.Assignment.models;
 
+import com.example.Assignment.mapper.ResponseData;
 import com.example.Assignment.mapper.UserDTO;
 import com.example.Assignment.mapper.UserMapper;
 import com.example.Assignment.service.UserService;
+
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.ValidationException;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/User")
@@ -66,12 +72,29 @@ public class UserController {
     }
 
     @PostMapping
-    public UserDTO createUser(@RequestBody UserDTO userDto) {
+    public ResponseEntity createUser(@RequestBody @Valid UserDTO userDto, BindingResult bindingResult) {
+        ResponseData responseData = new ResponseData();
+        responseData.setStatus("Success");
+
+        if (bindingResult.hasErrors()) {
+            responseData.setStatus("failed");
+            responseData.setDescription(String.join(",", bindingResult.getAllErrors()
+                    .stream()
+                    .map(ObjectError::getDefaultMessage)
+                    .collect(Collectors.toSet())));
+            return ResponseEntity.status(422).body(responseData);
+        }
         User user = userMapper.mapToEntity(userDto);
         User createdUser = userService.createUser(user);
-        return userMapper.mapToDto(createdUser);
+//      return userMapper.mapToDto(createdUser);
+        UserDTO createdUserDto = userMapper.mapToDto(createdUser);
+        responseData.setUser(createdUserDto);
+        return ResponseEntity.ok(responseData);
     }
-
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity<String> handleValidationException(ValidationException ex) {
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(ex.getMessage());
+    }
     @PutMapping("/{id}")
     public UserDTO updateAlldataUser(@PathVariable int id, @RequestBody UserDTO userDto) {
         User user = userMapper.mapToEntity(userDto);

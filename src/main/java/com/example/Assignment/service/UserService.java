@@ -5,6 +5,7 @@ import com.example.Assignment.mapper.UserMapper;
 import com.example.Assignment.models.User;
 import com.example.Assignment.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public class UserService {
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-    public User createUser(User user) {return userRepository.save(user);}
+    public User createUser(User user){return userRepository.save(user);}
     public User updateallUser(int id, User user) {
         User existingUser = userRepository.findById(id).orElse(null);
         if (existingUser != null) {
