@@ -60,9 +60,16 @@ public class UserController {
 //        return ResponseEntity.noContent().build();
 //    }
     @GetMapping()
-    public List<UserDTO> getAllUsers() {
-        List<User> users = userService.getAllUsers();
-        return userMapper.toDtoList(users);
+    public ResponseEntity getAllUsers() {
+        if(userService.isDatabaseAccessible()){
+            System.out.print("im here");
+            List<User> users = userService.getAllUsers();
+            return ResponseEntity.ok(users);
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Unable to access the database");
+        }
     }
 
     @GetMapping("/{id}")

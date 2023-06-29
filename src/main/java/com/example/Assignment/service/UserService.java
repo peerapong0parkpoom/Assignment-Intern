@@ -4,6 +4,7 @@ import com.example.Assignment.mapper.UserDTO;
 import com.example.Assignment.mapper.UserMapper;
 import com.example.Assignment.models.User;
 import com.example.Assignment.repository.UserRepository;
+import org.flywaydb.core.internal.jdbc.JdbcTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,14 @@ public class UserService {
     @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+    public boolean isDatabaseAccessible(){
+        try{
+            userRepository.findAll();
+            return true;
+        }catch(Exception e){
+            return false;
+        }
     }
     public User createUser(User user){return userRepository.save(user);}
     public User updateallUser(int id, User user) {
