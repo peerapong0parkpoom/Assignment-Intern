@@ -62,7 +62,6 @@ public class UserController {
     @GetMapping()
     public ResponseEntity getAllUsers() {
         if(userService.isDatabaseAccessible()){
-            System.out.print("im here");
             List<User> users = userService.getAllUsers();
             return ResponseEntity.ok(users);
         }

@@ -16,4 +16,10 @@ public class User {
     private String u_name;
     private String department;
 
+    public User() {}
+    public User(int id, String u_name, String department) {
+        this.id = id;
+        this.u_name = u_name;
+        this.department = department;
+    }
 }

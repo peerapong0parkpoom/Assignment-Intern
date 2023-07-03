@@ -19,4 +19,12 @@ public class UserDTO {
     @NotNull(message = "department is required")
     @NotBlank(message = "department is required")
     private String department;
+
+    public UserDTO() {}
+
+    public UserDTO(int id, String u_name, String department) {
+        this.id = id;
+        this.u_name = u_name;
+        this.department = department;
+    }
 }
