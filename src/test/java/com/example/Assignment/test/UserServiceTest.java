@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.times;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceTest {
@@ -40,9 +39,7 @@ public class UserServiceTest {
     }
     @Test
     public void testCreateUser() {
-        User user = new User();
-        user.setU_name("John Doe");
-        user.setDepartment("IT");
+        User user = new User(1, "uncle roger", "IT");
 
         Mockito.when(userRepository.save(any(User.class))).thenReturn(user);
 
@@ -53,11 +50,7 @@ public class UserServiceTest {
     @Test
     public void testUpdateallUser_UserExists() {
         // Prepare an existing user for testing
-        User existingUser = new User();
-        existingUser.setId(1);
-        existingUser.setU_name("Old Name");
-        existingUser.setDepartment("Old Department");
-
+        User existingUser = new User(1, "uncle roger", "IT");
         // Prepare the updated user object for testing
         User updatedUser = new User();
         updatedUser.setU_name("New Name");
@@ -97,10 +90,7 @@ public class UserServiceTest {
     @Test
     public void testUpdatesomeUser_UserExists() {
         // Prepare an existing user for testing
-        User existingUser = new User();
-        existingUser.setId(1);
-        existingUser.setU_name("Old Name");
-        existingUser.setDepartment("Old Department");
+        User existingUser = new User(1, "uncle roger", "IT");
 
         // Prepare the updated user object for testing
         User updatedUser = new User();
@@ -119,7 +109,7 @@ public class UserServiceTest {
         // Assert that the existing user has been updated with the new name
         Assert.assertEquals("New Name", existingUser.getU_name());
         // Assert that the existing user's department remains unchanged
-        Assert.assertEquals("Old Department", existingUser.getDepartment());
+        Assert.assertEquals("IT", existingUser.getDepartment());
     }
 
     @Test
@@ -141,10 +131,7 @@ public class UserServiceTest {
     @Test
     public void testGetUser_UserExists() {
         // Prepare an existing user for testing
-        User existingUser = new User();
-        existingUser.setId(1);
-        existingUser.setU_name("John Doe");
-        existingUser.setDepartment("IT");
+        User existingUser = new User(1, "uncle roger", "IT");
 
         // Mock the userRepository to return the existing user when findById is called
         Mockito.when(userRepository.findById(1)).thenReturn(Optional.of(existingUser));
@@ -173,14 +160,8 @@ public class UserServiceTest {
     public void testGetAllUsers() {
         // Prepare a list of users for testing
         List<User> userList = new ArrayList<>();
-        User user1 = new User();
-        user1.setId(1);
-        user1.setU_name("John Doe");
-        user1.setDepartment("IT");
-        User user2 = new User();
-        user2.setId(2);
-        user2.setU_name("Jane Smith");
-        user2.setDepartment("HR");
+        User user1 = new User(1, "uncle roger", "IT");
+        User user2 = new User(2, "uncle ben","Finance");
         userList.add(user1);
         userList.add(user2);
 

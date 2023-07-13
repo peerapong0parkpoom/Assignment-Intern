@@ -1,12 +1,8 @@
 package com.example.Assignment.service;
 
-import com.example.Assignment.mapper.UserDTO;
-import com.example.Assignment.mapper.UserMapper;
 import com.example.Assignment.models.User;
 import com.example.Assignment.repository.UserRepository;
-import org.flywaydb.core.internal.jdbc.JdbcTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
