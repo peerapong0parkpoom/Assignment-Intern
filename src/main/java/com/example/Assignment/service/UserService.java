@@ -3,6 +3,9 @@ package com.example.Assignment.service;
 import com.example.Assignment.models.User;
 import com.example.Assignment.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +27,7 @@ public class UserService {
         }
     }
     public User createUser(User user){return userRepository.save(user);}
+    @CachePut(value = "User" , key = "#id")
     public User updateallUser(int id, User user) {
         User existingUser = userRepository.findById(id).orElse(null);
         if (existingUser != null) {
@@ -33,6 +37,7 @@ public class UserService {
         }
         return null;
     }
+    @CachePut(value = "User" , key = "#id")
     public User updatesomeUser(int id, User user) {
         User existingUser = userRepository.findById(id).orElse(null);
         if (existingUser != null) {
@@ -46,14 +51,17 @@ public class UserService {
         }
         return null;
     }
+    @Cacheable(value = "User", key = "#id" , unless = "#result == null")
     public Optional<User> getUser(int id) {
+        System.out.println("calling "+id);
         return userRepository.findById(id);
     }
-
+    @Cacheable("User")
     public List<User> getAllUsers() {
+        System.out.println("calling all");
         return userRepository.findAll();
     }
-
+    @CacheEvict(value = "User" , allEntries = true)
     public void deleteUser(int id) {
         userRepository.deleteById(id);
     }
